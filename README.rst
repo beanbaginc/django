@@ -33,6 +33,20 @@ Downloads
 All security backport releases will be posted to our `downloads page`_. They
 are not available via PyPI.
 
+You can verify builds against our `PGP key`_ (285291B34ED1F993).
+
+Current releases:
+
+* **1.6.11.1** - August 18, 2015
+  (`Release notes <https://github.com/beanbaginc/django/blob/security-backports/1.6.x/docs/releases/1.6.11.1.txt>`_)
+
+  `Django-1.6.11.1.tar.gz <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.tar.gz#md5=b2aff4ed0d3757cdde3200900c9080a8>`_
+  (`pgp <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.tar.gz.asc#md5=15bad0e2d1d831511eb964bf975f6e62>`_,
+  `sha256 <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.sha256sum#md5=925f259c4325cd2d5329382b9cd3f85f>`_)
+
+
+.. _`PGP key`: https://keybase.io/beanbag
+
 
 Reporting Bugs
 --------------
@@ -45,7 +59,7 @@ If they're absolutely upstream Django bugs, you can file it against the
 `Django bug tracker`_. However, if they're our problem, please file it against
 `our bug tracker`_.
 
-.. _`downloads page`: http://downloads.reviewboard.org/releases/Django/1.6/
+.. _`downloads page`: https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/index.html
 .. _`Django bug tracker`: https://code.djangoproject.com/newticket
 .. _`our bug tracker`: https://www.reviewboard.org/bugs/new/
 
