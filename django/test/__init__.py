@@ -8,3 +8,12 @@ from django.test.testcases import (TestCase, TransactionTestCase,
     skipUnlessDBFeature
 )
 from django.test.utils import Approximate
+
+# To simplify Django's test suite; not meant as a public API
+try:
+    from unittest import mock  # NOQA
+except ImportError:
+    try:
+        import mock  # NOQA
+    except ImportError:
+        pass
