@@ -40,23 +40,23 @@ Current releases:
 * **1.6.11.3** - March 1, 2016
   (`Release notes <https://github.com/beanbaginc/django/blob/security-backports/1.6.x/docs/releases/1.6.11.3.txt>`__)
 
-  `Django-1.6.11.3.tar.gz <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.3.tar.gz>`_
-  (`pgp <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.3.tar.gz.asc>`__,
-  `sha256 <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.3.sha256sum>`__)
+  `Django-1.6.11.3.tar.gz <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.3.tar.gz>`_
+  (`pgp <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.3.tar.gz.asc>`__,
+  `sha256 <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.3.sha256sum>`__)
 
 * **1.6.11.2** - November 24, 2015
   (`Release notes <https://github.com/beanbaginc/django/blob/security-backports/1.6.x/docs/releases/1.6.11.2.txt>`__)
 
-  `Django-1.6.11.2.tar.gz <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.2.tar.gz>`_
-  (`pgp <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.2.tar.gz.asc>`__,
-  `sha256 <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.2.sha256sum>`__)
+  `Django-1.6.11.2.tar.gz <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.2.tar.gz>`_
+  (`pgp <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.2.tar.gz.asc>`__,
+  `sha256 <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.2.sha256sum>`__)
 
 * **1.6.11.1** - August 18, 2015
   (`Release notes <https://github.com/beanbaginc/django/blob/security-backports/1.6.x/docs/releases/1.6.11.1.txt>`__)
 
-  `Django-1.6.11.1.tar.gz <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.tar.gz#md5=b2aff4ed0d3757cdde3200900c9080a8>`_
-  (`pgp <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.tar.gz.asc#md5=15bad0e2d1d831511eb964bf975f6e62>`__,
-  `sha256 <https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.sha256sum#md5=925f259c4325cd2d5329382b9cd3f85f>`__)
+  `Django-1.6.11.1.tar.gz <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.tar.gz#md5=b2aff4ed0d3757cdde3200900c9080a8>`_
+  (`pgp <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.tar.gz.asc#md5=15bad0e2d1d831511eb964bf975f6e62>`__,
+  `sha256 <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.1.sha256sum#md5=925f259c4325cd2d5329382b9cd3f85f>`__)
 
 
 .. _`PGP key`: https://keybase.io/beanbag
@@ -73,7 +73,7 @@ If they're absolutely upstream Django bugs, you can file it against the
 `Django bug tracker`_. However, if they're our problem, please file it against
 `our bug tracker`_.
 
-.. _`downloads page`: https://s3.amazonaws.com/downloads.reviewboard.org/releases/Django/1.6/index.html
+.. _`downloads page`: https://downloads.reviewboard.org/releases/Django/1.6/index.html
 .. _`Django bug tracker`: https://code.djangoproject.com/newticket
 .. _`our bug tracker`: https://www.reviewboard.org/bugs/new/
 
