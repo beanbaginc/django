@@ -3,10 +3,10 @@ import time
 
 from django.conf import settings
 from django.db.backends.creation import BaseDatabaseCreation
+from django.utils.crypto import get_random_string
 from django.utils.six.moves import input
 
 TEST_DATABASE_PREFIX = 'test_'
-PASSWORD = 'Im_a_lumberjack'
 
 class DatabaseCreation(BaseDatabaseCreation):
     # This dictionary maps Field objects to their associated Oracle column
@@ -232,12 +232,19 @@ class DatabaseCreation(BaseDatabaseCreation):
         return name
 
     def _test_database_passwd(self):
-        name = PASSWORD
+        name = None
+
         try:
             if self.connection.settings_dict['TEST_PASSWD']:
                 name = self.connection.settings_dict['TEST_PASSWD']
         except KeyError:
             pass
+
+        if not name and self._test_user_create():
+            # Oracle passwords are limited to 30 chars and can't contain
+            # symbols.
+            name = get_random_string(length=30)
+
         return name
 
     def _test_database_tblspace(self):
