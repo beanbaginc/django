@@ -119,6 +119,8 @@ class TestUtilsHttp(unittest.TestCase):
                         r'http://testserver\me:pass@example.com',
                         r'http://testserver\@example.com',
                         r'http:\\testserver\confirm\me@example.com',
+                        'http:999999999',
+                        'ftp:9999999999',
                         '\n'):
             self.assertFalse(http.is_safe_url(bad_url, host='testserver'), "%s should be blocked" % bad_url)
         for good_url in ('/view/?param=http://example.com',
@@ -129,7 +131,8 @@ class TestUtilsHttp(unittest.TestCase):
                      'HTTPS://testserver/',
                      '//testserver/',
                      'http://testserver/confirm?email=me@example.com',
-                     '/url%20with%20spaces/'):
+                     '/url%20with%20spaces/',
+                     'path/http:2222222222'):
             self.assertTrue(http.is_safe_url(good_url, host='testserver'), "%s should be allowed" % good_url)
         # Valid basic auth credentials are allowed.
         self.assertTrue(http.is_safe_url(r'http://user:pass@testserver/', host='user:pass@testserver'))
