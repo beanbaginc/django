@@ -23,7 +23,7 @@ capfirst = allow_lazy(capfirst, six.text_type)
 
 # Set up regular expressions
 re_words = re.compile(r'&.*?;|<.*?>|(\w[\w-]*)', re.U|re.S)
-re_tag = re.compile(r'<(/)?([^ ]+?)(?:(\s*/)| .*?)?>', re.S)
+re_tag = re.compile(r'<(/)?(\S+?)(?:(\s*/)|\s.*?)?>', re.S)
 
 
 def wrap(text, width):
