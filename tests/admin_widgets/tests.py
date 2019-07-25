@@ -316,6 +316,20 @@ class AdminURLWidgetTest(DjangoTestCase):
             '<p class="url">Currently:<a href="http://example.com">http://example.com</a><br />Change:<input class="vURLField" name="test" type="url" value="http://example.com" /></p>'
         )
 
+    def test_render_validates_url(self):
+        w = widgets.AdminURLFieldWidget()
+
+        self.assertHTMLEqual(
+            w.render('test', ''),
+            '<input class="vURLField" name="test" type="url" />')
+
+        for invalid in ['/not/a/full/url/',
+                        'javascript:alert(\'Danger XSS!\')']:
+            self.assertHTMLEqual(
+                w.render('test', invalid),
+                '<input class="vURLField" name="test" type="url" value="%s" />'
+                % invalid)
+
     def test_render_idn(self):
         w = widgets.AdminURLFieldWidget()
         self.assertHTMLEqual(
@@ -328,12 +342,12 @@ class AdminURLWidgetTest(DjangoTestCase):
         # assertHTMLEqual will get rid of some escapes which are tested here!
         w = widgets.AdminURLFieldWidget()
         self.assertEqual(
-            w.render('test', 'http://example.com/<sometag>some text</sometag>'),
-            '<p class="url">Currently: <a href="http://example.com/%3Csometag%3Esome%20text%3C/sometag%3E">http://example.com/&lt;sometag&gt;some text&lt;/sometag&gt;</a><br />Change: <input class="vURLField" name="test" type="url" value="http://example.com/&lt;sometag&gt;some text&lt;/sometag&gt;" /></p>'
+            w.render('test', 'http://example.com/<sometag>some-text</sometag>'),
+            '<p class="url">Currently: <a href="http://example.com/%3Csometag%3Esome-text%3C/sometag%3E">http://example.com/&lt;sometag&gt;some-text&lt;/sometag&gt;</a><br />Change: <input class="vURLField" name="test" type="url" value="http://example.com/&lt;sometag&gt;some-text&lt;/sometag&gt;" /></p>'
         )
         self.assertEqual(
-            w.render('test', 'http://example-äüö.com/<sometag>some text</sometag>'),
-            '<p class="url">Currently: <a href="http://xn--example--7za4pnc.com/%3Csometag%3Esome%20text%3C/sometag%3E">http://example-äüö.com/&lt;sometag&gt;some text&lt;/sometag&gt;</a><br />Change: <input class="vURLField" name="test" type="url" value="http://example-äüö.com/&lt;sometag&gt;some text&lt;/sometag&gt;" /></p>'
+            w.render('test', 'http://example-äüö.com/<sometag>some-text</sometag>'),
+            '<p class="url">Currently: <a href="http://xn--example--7za4pnc.com/%3Csometag%3Esome-text%3C/sometag%3E">http://example-äüö.com/&lt;sometag&gt;some-text&lt;/sometag&gt;</a><br />Change: <input class="vURLField" name="test" type="url" value="http://example-äüö.com/&lt;sometag&gt;some-text&lt;/sometag&gt;" /></p>'
         )
         self.assertEqual(
             w.render('test', 'http://www.example.com/%C3%A4"><script>alert("XSS!")</script>"'),
