@@ -2,7 +2,7 @@
 Django 1.6.11.8 release notes
 =============================
 
-*July 1, 2019*
+*August 1, 2019*
 
 Django 1.6.11.8 fixes a security issue in 1.6.11.7.
 
