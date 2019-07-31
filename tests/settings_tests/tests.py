@@ -314,3 +314,15 @@ class SecureProxySslHeaderTest(TestCase):
         req = HttpRequest()
         req.META['HTTP_X_FORWARDED_PROTOCOL'] = 'https'
         self.assertEqual(req.is_secure(), True)
+
+    @override_settings(SECURE_PROXY_SSL_HEADER=('HTTP_X_FORWARDED_PROTOCOL', 'https'))
+    def test_xheader_preferred_to_underlying_request(self):
+        class ProxyRequest(HttpRequest):
+            def _is_secure(self):
+                """Proxy always connecting via HTTPS"""
+                return True
+
+        # Client connects via HTTP.
+        req = ProxyRequest()
+        req.META['HTTP_X_FORWARDED_PROTOCOL'] = 'http'
+        self.assertIs(req.is_secure(), False)

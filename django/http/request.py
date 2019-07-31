@@ -127,11 +127,12 @@ class HttpRequest(object):
         # First, check the SECURE_PROXY_SSL_HEADER setting.
         if settings.SECURE_PROXY_SSL_HEADER:
             try:
-                header, value = settings.SECURE_PROXY_SSL_HEADER
+                header, secure_value = settings.SECURE_PROXY_SSL_HEADER
             except ValueError:
                 raise ImproperlyConfigured('The SECURE_PROXY_SSL_HEADER setting must be a tuple containing two values.')
-            if self.META.get(header, None) == value:
-                return True
+            header_value = self.META.get(header)
+            if header_value is not None:
+                return header_value == secure_value
 
         # Failing that, fall back to _is_secure(), which is a hook for
         # subclasses to implement.
