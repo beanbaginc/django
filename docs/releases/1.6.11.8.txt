@@ -42,3 +42,17 @@ If you deploy Django behind a reverse-proxy that forwards HTTP requests, and
 that connects to Django via HTTPS, be sure to verify that your application
 correctly handles code paths relying on ``scheme``, ``is_secure()``,
 ``build_absolute_uri()``, and ``SECURE_SSL_REDIRECT``.
+
+
+CVE-2019-14232: Denial-of-service possibility in ``django.utils.text.Truncator``
+================================================================================
+
+If ``django.utils.text.Truncator``'s ``words()`` methods was passed the
+``html=True`` argument, it would be extremely slow to evaluate certain inputs
+due to a catastrophic backtracking vulnerability in a regular expression. The
+``words()`` method is used to implement the :tfilter:`truncatewords_html`
+template filter, which was thus vulnerable.
+
+The regular expression used by ``Truncator`` have been simplified in order to
+avoid potential backtracking issues. As a consequence, trailing punctuation
+may now at times be included in the truncated output.

@@ -173,10 +173,10 @@ class DefaultFiltersTests(TestCase):
             '<p>one <a href="#">two ...</a></p>')
         self.assertEqual(truncatewords_html(
             '<p>one <a href="#">two - three <br>four</a> five</p>', 4),
-            '<p>one <a href="#">two - three <br>four ...</a></p>')
+            '<p>one <a href="#">two - three ...</a></p>')
         self.assertEqual(truncatewords_html(
             '<p>one <a href="#">two - three <br>four</a> five</p>', 5),
-            '<p>one <a href="#">two - three <br>four</a> five</p>')
+            '<p>one <a href="#">two - three <br>four ...</a></p>')
         self.assertEqual(truncatewords_html(
             '<p>one <a href="#">two - three <br>four</a> five</p>', 100),
             '<p>one <a href="#">two - three <br>four</a> five</p>')

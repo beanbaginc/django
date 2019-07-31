@@ -54,6 +54,18 @@ class TestUtilsText(SimpleTestCase):
         self.assertEqual('The quick brown fox[snip]',
             truncator.words(4, '[snip]'))
 
+        truncator = text.Truncator('<p>I &lt;3 python, what about you?</p>')
+        self.assertEqual('<p>I &lt;3 python,...</p>', truncator.words(3, '...', html=True))
+
+        perf_test_values = [
+            ('</a' + '\t' * 50000) + '//>',
+            '&' * 50000,
+            '_X<<<<<<<<<<<>',
+        ]
+        for value in perf_test_values:
+            truncator = text.Truncator(value)
+            self.assertEqual(value, truncator.words(50, html=True))
+
     def test_truncate_html_words(self):
         truncator = text.Truncator('<p id="par"><strong><em>The quick brown fox'
             ' jumped over the lazy dog.</em></strong></p>')
