@@ -13,6 +13,7 @@ from django.core.validators import URLValidator
 from django.forms.widgets import RadioFieldRenderer
 from django.forms.util import flatatt
 from django.utils.html import escape, format_html, format_html_join, smart_urlquote
+from django.utils.http import urlencode
 from django.utils.text import Truncator
 from django.utils.translation import ugettext as _
 from django.utils.safestring import mark_safe
@@ -156,7 +157,7 @@ class ForeignKeyRawIdWidget(forms.TextInput):
 
             params = self.url_parameters()
             if params:
-                url = '?' + '&amp;'.join(['%s=%s' % (k, v) for k, v in params.items()])
+                url = '?' + urlencode(params)
             else:
                 url = ''
             if "class" not in attrs:

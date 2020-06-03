@@ -27,6 +27,12 @@ class Band(models.Model):
     def __str__(self):
         return self.name
 
+class UnsafeLimitChoicesTo(models.Model):
+    band = models.ForeignKey(
+        Band,
+        limit_choices_to={'name': '"&><escapeme'},
+    )
+
 @python_2_unicode_compatible
 class Album(models.Model):
     band = models.ForeignKey(Band)

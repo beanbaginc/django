@@ -445,6 +445,20 @@ class ForeignKeyRawIdWidgetTest(DjangoTestCase):
             '<input type="text" name="test" value="93" class="vForeignKeyRawIdAdminField" /><a href="/widget_admin/admin_widgets/inventory/?t=barcode" class="related-lookup" id="lookup_id_test" onclick="return showRelatedObjectLookupPopup(this);"> <img src="%(ADMIN_STATIC_PREFIX)simg/selector-search.gif" width="16" height="16" alt="Lookup" /></a>&nbsp;<strong>Hidden</strong>' % admin_static_prefix()
         )
 
+    def test_render_unsafe_limit_choices_to(self):
+        rel = models.UnsafeLimitChoicesTo._meta.get_field('band').rel
+        w = widgets.ForeignKeyRawIdWidget(rel, widget_admin_site)
+        self.assertHTMLEqual(
+            w.render('test', None),
+            '<input type="text" name="test" class="vForeignKeyRawIdAdminField" />'
+            '<a href="/widget_admin/admin_widgets/band/?name=%%22%%26%%3E%%3Cescapeme&amp;t=id" '
+            'class="related-lookup" id="lookup_id_test" '
+            'onclick="return showRelatedObjectLookupPopup(this);"> '
+            '<img src="%(ADMIN_STATIC_PREFIX)simg/selector-search.gif" '
+            'width="16" height="16" alt="Lookup" /></a>'
+            % admin_static_prefix()
+        )
+
 
 class ManyToManyRawIdWidgetTest(DjangoTestCase):
     def test_render(self):
