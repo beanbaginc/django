@@ -37,6 +37,13 @@ You can verify builds against our `PGP key`_ (285291B34ED1F993).
 
 Current releases:
 
+* **1.6.11.9** - June 3, 2020
+  (`Release notes <https://github.com/beanbaginc/django/blob/security-backports/1.6.x/docs/releases/1.6.11.9.txt>`__)
+
+  `Django-1.6.11.9.tar.gz <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.9.tar.gz>`_
+  (`pgp <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.9.tar.gz.asc>`__,
+  `sha256 <https://downloads.reviewboard.org/releases/Django/1.6/Django-1.6.11.9.sha256sum>`__)
+
 * **1.6.11.8** - August 1, 2019
   (`Release notes <https://github.com/beanbaginc/django/blob/security-backports/1.6.x/docs/releases/1.6.11.8.txt>`__)
 
