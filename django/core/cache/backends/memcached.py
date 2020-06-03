@@ -4,7 +4,9 @@ import time
 import pickle
 from threading import local
 
-from django.core.cache.backends.base import BaseCache, DEFAULT_TIMEOUT
+from django.core.cache.backends.base import (
+    DEFAULT_TIMEOUT, BaseCache, InvalidCacheKey, memcache_key_warnings,
+)
 
 from django.utils import six
 from django.utils.encoding import force_str
@@ -68,10 +70,12 @@ class BaseMemcachedCache(BaseCache):
 
     def add(self, key, value, timeout=DEFAULT_TIMEOUT, version=None):
         key = self.make_key(key, version=version)
+        self.validate_key(key)
         return self._cache.add(key, value, self._get_memcache_timeout(timeout))
 
     def get(self, key, default=None, version=None):
         key = self.make_key(key, version=version)
+        self.validate_key(key)
         val = self._cache.get(key)
         if val is None:
             return default
@@ -79,14 +83,18 @@ class BaseMemcachedCache(BaseCache):
 
     def set(self, key, value, timeout=DEFAULT_TIMEOUT, version=None):
         key = self.make_key(key, version=version)
+        self.validate_key(key)
         self._cache.set(key, value, self._get_memcache_timeout(timeout))
 
     def delete(self, key, version=None):
         key = self.make_key(key, version=version)
+        self.validate_key(key)
         self._cache.delete(key)
 
     def get_many(self, keys, version=None):
         new_keys = [self.make_key(x, version=version) for x in keys]
+        for key in new_keys:
+            self.validate_key(key)
         ret = self._cache.get_multi(new_keys)
         if ret:
             _ = {}
@@ -101,6 +109,7 @@ class BaseMemcachedCache(BaseCache):
 
     def incr(self, key, delta=1, version=None):
         key = self.make_key(key, version=version)
+        self.validate_key(key)
         # memcached doesn't support a negative delta
         if delta < 0:
             return self._cache.decr(key, -delta)
@@ -119,6 +128,7 @@ class BaseMemcachedCache(BaseCache):
 
     def decr(self, key, delta=1, version=None):
         key = self.make_key(key, version=version)
+        self.validate_key(key)
         # memcached doesn't support a negative delta
         if delta < 0:
             return self._cache.incr(key, -delta)
@@ -139,6 +149,7 @@ class BaseMemcachedCache(BaseCache):
         safe_data = {}
         for key, value in data.items():
             key = self.make_key(key, version=version)
+            self.validate_key(key)
             safe_data[key] = value
         self._cache.set_multi(safe_data, self._get_memcache_timeout(timeout))
 
@@ -148,6 +159,11 @@ class BaseMemcachedCache(BaseCache):
 
     def clear(self):
         self._cache.flush_all()
+
+    def validate_key(self, key):
+        for warning in memcache_key_warnings(key):
+            raise InvalidCacheKey(warning)
+
 
 class MemcachedCache(BaseMemcachedCache):
     "An implementation of a cache binding using python-memcached"

@@ -1,0 +1,17 @@
+=============================
+Django 1.6.11.9 release notes
+=============================
+
+*June 3, 2020*
+
+Django 1.6.11.9 fixes a security issue in 1.6.x. It contains backports of
+changes from Django 2.2.13.
+
+
+CVE-2020-13254: Potential data leakage via malformed memcached keys
+===================================================================
+
+In cases where a memcached backend does not perform key validation, passing
+malformed cache keys could result in a key collision, and potential data
+leakage. In order to avoid this vulnerability, key validation is added to the
+memcached cache backends.

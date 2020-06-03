@@ -15,6 +15,10 @@ class CacheKeyWarning(DjangoRuntimeWarning):
     pass
 
 
+class InvalidCacheKey(ValueError):
+    pass
+
+
 # Stub class to ensure not passing in a `timeout` argument results in
 # the default timeout
 DEFAULT_TIMEOUT = object()
@@ -199,15 +203,8 @@ class BaseCache(object):
         cache code.
 
         """
-        if len(key) > MEMCACHE_MAX_KEY_LENGTH:
-            warnings.warn('Cache key will cause errors if used with memcached: '
-                    '%s (longer than %s)' % (key, MEMCACHE_MAX_KEY_LENGTH),
-                    CacheKeyWarning)
-        for char in key:
-            if ord(char) < 33 or ord(char) == 127:
-                warnings.warn('Cache key contains characters that will cause '
-                        'errors if used with memcached: %r' % key,
-                              CacheKeyWarning)
+        for warning in memcache_key_warnings(key):
+            warnings.warn(warning, CacheKeyWarning)
 
     def incr_version(self, key, delta=1, version=None):
         """Adds delta to the cache version for the supplied key. Returns the
@@ -233,3 +230,18 @@ class BaseCache(object):
     def close(self, **kwargs):
         """Close the cache connection"""
         pass
+
+
+def memcache_key_warnings(key):
+    if len(key) > MEMCACHE_MAX_KEY_LENGTH:
+        yield (
+            'Cache key will cause errors if used with memcached: %r '
+            '(longer than %s)' % (key, MEMCACHE_MAX_KEY_LENGTH)
+        )
+    for char in key:
+        if ord(char) < 33 or ord(char) == 127:
+            yield (
+                'Cache key contains characters that will cause errors if '
+                'used with memcached: %r' % key
+            )
+            break

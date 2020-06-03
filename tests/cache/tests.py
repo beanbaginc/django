@@ -16,7 +16,7 @@ import pickle
 
 from django.conf import settings
 from django.core import management
-from django.core.cache import get_cache
+from django.core.cache import get_cache, InvalidCacheKey
 from django.core.cache.backends.base import (CacheKeyWarning,
     InvalidCacheBackendError)
 from django.core.context_processors import csrf
@@ -492,11 +492,10 @@ class BaseCacheTests(object):
 
     def test_invalid_keys(self):
         """
-        All the builtin backends (except memcached, see below) should warn on
-        keys that would be refused by memcached. This encourages portable
-        caching code without making it too difficult to use production backends
-        with more liberal key rules. Refs #6447.
-
+        All the builtin backends should warn (except memcached that should
+        error) on keys that would be refused by memcached. This encourages
+        portable caching code without making it too difficult to use production
+        backends with more liberal key rules. Refs #6447.
         """
         # mimic custom ``make_key`` method being defined since the default will
         # never show the below warnings
@@ -511,7 +510,7 @@ class BaseCacheTests(object):
                 warnings.simplefilter("always")
                 # memcached does not allow whitespace or control characters in keys
                 self.cache.set('key with spaces', 'value')
-                self.assertEqual(len(w), 2)
+                self.assertEqual(len(w), 1)
                 self.assertIsInstance(w[0].message, CacheKeyWarning)
             with warnings.catch_warnings(record=True) as w:
                 warnings.simplefilter("always")
@@ -1012,18 +1011,27 @@ class MemcachedCacheTests(unittest.TestCase, BaseCacheTests):
 
     def test_invalid_keys(self):
         """
-        On memcached, we don't introduce a duplicate key validation
-        step (for speed reasons), we just let the memcached API
-        library raise its own exception on bad keys. Refs #6447.
-
-        In order to be memcached-API-library agnostic, we only assert
-        that a generic exception of some kind is raised.
-
+        Whilst other backends merely warn, memcached should raise for an
+        invalid key.
         """
         # memcached does not allow whitespace or control characters in keys
-        self.assertRaises(Exception, self.cache.set, 'key with spaces', 'value')
+        expected_warning = (
+            'Cache key contains characters that will cause errors if used '
+            'with memcached: %r' % key
+        )
+
+        with self.assertRaisesMessage(InvalidCacheKey, expected_warning):
+            self.cache.set('key with spaces', 'value')
+
         # memcached limits key length to 250
-        self.assertRaises(Exception, self.cache.set, 'a' * 251, 'value')
+        key = 'a' * 251
+        expected_warning = (
+            'Cache key will cause errors if used with memcached: '
+            '%r (longer than %s)' % (key, 250)
+        ).replace(key, ':1:%s' % key)
+
+        with self.assertRaisesMessage(InvalidCacheKey, expected_warning):
+            self.cache.set(key, 'value')
 
     # Explicitly display a skipped test if no configured cache uses MemcachedCache
     @unittest.skipUnless(
